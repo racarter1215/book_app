@@ -16,6 +16,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', renderPage);
 app.get('/searches/new', renderPage2);
+app.post('/searches', newSearchData);
 
 // dbClient.connect(error => {
 //     if (error) {
@@ -24,6 +25,16 @@ app.get('/searches/new', renderPage2);
 //         console.log('connected to database')
 //     }
 // });
+
+function newSearchData(request, response) {
+    let formData = request.query.search;
+    let url = `https://www.googleapis.com/books/v1/volumes?&maxResults=10`
+
+    response.status(200).render('./pages/searches/show')
+}
+// function Book(book) {
+//     this.image = 
+// }
 
 function renderPage(request, response) {
     response.status(200).render('./pages/index.ejs');
