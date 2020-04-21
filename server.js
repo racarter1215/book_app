@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 app.get('/', renderPage);
+app.get('/searches/new', renderPage2);
 
 // dbClient.connect(error => {
 //     if (error) {
@@ -26,6 +27,10 @@ app.get('/', renderPage);
 
 function renderPage(request, response) {
     response.status(200).render('./pages/index.ejs');
+}
+
+function renderPage2(request, response) {
+    response.status(200).render('./pages/searches/new');
 }
 function handleError(error, request, response) {
     response.status(500).send({status: 500, responseText: 'Sorry something went wrong'});
