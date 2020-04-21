@@ -10,16 +10,16 @@
     This new NEW EJS
     <h1>SEARCH</h1>
     <form action=/searches method="POST">
-        <input type="text" name="search" placeholder="Search for Title or Author" required>
+        <input type="text" name="searchQuery" placeholder="Search for Title or Author" required>
             <fieldset>
                 <h3>SEARCH BY</h3>
                 <label for="title">
                 <span>Title</span>
-                <input type="radio" name="search" value="title"/>
+                <input type="radio" name="search" value="intitle"/>
                 </label>
                 <label for="author">
                 <span>Author</span>
-                <input type="radio" name="search" value="author"/>
+                <input type="radio" name="search" value="inauthor"/>
                 </label>
             </fieldset>
         <button class="searchbutton" type="submit">Search for Books</button>

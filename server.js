@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const express = require('express');
-// const superagent = require('superagent');
+const superagent = require('superagent');
 // const pg = require('pg');
 // const dbClient = new pg.Client(process.env.DATABASE_URL);
 // const cors = require('cors');
@@ -27,9 +27,15 @@ app.post('/searches', newSearchData);
 // });
 
 function newSearchData(request, response) {
-    let formData = request.query.search;
-    let url = `https://www.googleapis.com/books/v1/volumes?&maxResults=10`
+    let search = request.body;
+    let searchText = search.searchQuery;
+    let radioSelected = search.search;
+    let url = `https://www.googleapis.com/books/v1/volumes?q=+${radioSelected}:${searchText}&maxResults=10`;
 
+    superagent.get(url)
+        .then((results) => {
+            console.log('books', results.body.items);
+        })
     response.status(200).render('./pages/searches/show')
 }
 // function Book(book) {
