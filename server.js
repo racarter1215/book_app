@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const express = require('express');
-// const superagent = require('superagent');
+const superagent = require('superagent');
 // const pg = require('pg');
 // const dbClient = new pg.Client(process.env.DATABASE_URL);
 // const cors = require('cors');
@@ -33,8 +33,8 @@ function newSearchData(request, response) {
     let url = `https://www.googleapis.com/books/v1/volumes?q=+${radioSelected}:${searchText}&maxResults=10`;
 
     superagent.get(url)
-        .then((books) => {
-            console.log(books.body, 'books');
+        .then((results) => {
+            console.log('books', results.body.items);
         })
     response.status(200).render('./pages/searches/show')
 }
