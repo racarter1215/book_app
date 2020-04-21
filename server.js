@@ -27,9 +27,15 @@ app.post('/searches', newSearchData);
 // });
 
 function newSearchData(request, response) {
-    let formData = request.query.search;
-    let url = `https://www.googleapis.com/books/v1/volumes?&maxResults=10`
+    let search = request.body;
+    let searchText = search.searchQuery;
+    let radioSelected = search.search;
+    let url = `https://www.googleapis.com/books/v1/volumes?q=+${radioSelected}:${searchText}&maxResults=10`;
 
+    superagent.get(url)
+        .then((books) => {
+            console.log(books.body, 'books');
+        })
     response.status(200).render('./pages/searches/show')
 }
 // function Book(book) {
