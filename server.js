@@ -4,8 +4,8 @@ require('dotenv').config();
 
 const express = require('express');
 const superagent = require('superagent');
-// const pg = require('pg');
-// const dbClient = new pg.Client(process.env.DATABASE_URL);
+const pg = require('pg');
+const dbClient = new pg.Client(process.env.DATABASE_URL);
 // const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -18,13 +18,13 @@ app.get('/', renderPage);
 app.get('/searches/new', renderPage2);
 app.post('/searches', newSearchData);
 
-// dbClient.connect(error => {
-//     if (error) {
-//         console.error('connection to database error', error.stack)
-//     } else {
-//         console.log('connected to database')
-//     }
-// });
+dbClient.connect(error => {
+    if (error) {
+        console.error('connection to database error', error.stack)
+    } else {
+        console.log('connected to database')
+    }
+});
 
 function Book(book) {
     this.title = book.title;
