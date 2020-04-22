@@ -26,21 +26,28 @@ app.post('/searches', newSearchData);
 //     }
 // });
 
+function Book(book) {
+    this.title = book.title;
+    this.authors_names = book.authors;
+    this.description = book.description;
+    this.isbn = book.industryIdentifiers;
+    this.bookshelf = book.bookshelf;
+    if(book.imageLinks) {
+        this.imageUrl = book.imageLinks.thumbnail ? book.imageLinks.thumbnail : url('./styles/img/book-placeholder');
+    }
+}
+
 function newSearchData(request, response) {
     let search = request.body;
     let searchText = search.searchQuery;
     let radioSelected = search.search;
-    let url = `https://www.googleapis.com/books/v1/volumes?q=+${radioSelected}:${searchText}&maxResults=10`;
+    let googleUrl = `https://www.googleapis.com/books/v1/volumes?q=+${radioSelected}:${searchText}&maxResults=10`;
 
-    superagent.get(url)
-        .then((results) => {
-            console.log('books', results.body.items);
-        })
-    response.status(200).render('./pages/searches/show')
+    superagent.get(googleUrl)
+        .then((results) => results.body.items.map(book => new Book(book.volumeInfo)))
+        .then((book => response.status(200).render('./pages/searches/show', {book: book})))
+        .catch(error => handleError(error, request, response));
 }
-// function Book(book) {
-//     this.image = 
-// }
 
 function renderPage(request, response) {
     response.status(200).render('./pages/index.ejs');
@@ -53,6 +60,9 @@ function handleError(error, request, response) {
     response.status(500).send({status: 500, responseText: 'Sorry something went wrong'});
   }
 
+app.post('/searches', (request, response) => {
+    let url = googleUrl
+});
 // app.use('/', (request, response) => response.send('Sorry that route does not exist'));
 
 app.listen(PORT, () => {

@@ -6,6 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    Display Results
+    <h1>Display Results</h1>
+
+    <% book.forEach(book => { %>
+
+    <img src="<%= book.imageUrl %>" />
+
+    <h4><%= book.title %></h4>
+
+    <h5><%= book.authors_names %></h5>
+
+    <p><%= book.description %></p>
+
+<% }) %>
 </body>
 </html>
