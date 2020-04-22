@@ -33,7 +33,7 @@ function Book(book) {
     this.isbn = book.industryIdentifiers;
     this.bookshelf = book.bookshelf;
     if(book.imageLinks) {
-        this.imageUrl = book.imageLinks.thumbnail ? book.imageLinks.thumbnail : url('./styles/img/book-placeholder');
+        this.imageUrl = book.imageLinks.thumbnail ? book.imageLinks.thumbnail : url('./styles/img/book-placeholder.png');
     }
 }
 

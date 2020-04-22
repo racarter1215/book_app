@@ -7,19 +7,18 @@
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-    This new NEW EJS
-    <h1>SEARCH</h1>
+    <h3>Search by title or author</h3>
     <form action=/searches method="POST">
-        <input type="text" name="searchQuery" placeholder="Search for Title or Author" required>
+        <input class="searchBox" type="text" name="searchQuery" placeholder="Search for Title or Author" required>
             <fieldset>
-                <h3>SEARCH BY</h3>
+                <h4>Enter a title or author</h4>
                 <label for="title">
                 <span>Title</span>
                 <input type="radio" name="search" value="intitle"/>
                 </label>
                 <label for="author">
                 <span>Author</span>
-                <input type="radio" name="search" value="inauthor"/>
+                <input class="radio" type="radio" name="search" value="inauthor"/>
                 </label>
             </fieldset>
         <button class="searchbutton" type="submit">Search for Books</button>
