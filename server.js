@@ -57,7 +57,7 @@ function renderPage2(request, response) {
     response.status(200).render('./pages/searches/new');
 }
 function handleError(error, request, response) {
-    response.status(500).send({status: 500, responseText: 'Sorry something went wrong'});
+    response.status(500).render('./pages/error.ejs');
   }
 
 app.post('/searches', (request, response) => {
