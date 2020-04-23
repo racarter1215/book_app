@@ -15,9 +15,9 @@
 <body>
     <h1>Welcome to the Thunderdome</h1>
     <section>
-      <h5>Your total collection is: 0 books so far</h5>
+      <h5>Your total collection is: <%= count %> books so far</h5>
     </section>
-
+    <%- include ('./partials/book-render.ejs') %>;
     <a href="/searches/new"><button>Search for Books</button></a>
 </body>
 </html>

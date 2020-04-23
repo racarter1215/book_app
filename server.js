@@ -17,14 +17,9 @@ app.set('view engine', 'ejs');
 app.get('/', renderPage);
 app.get('/searches/new', renderPage2);
 app.post('/searches', newSearchData);
-
-dbClient.connect(error => {
-    if (error) {
-        console.error('connection to database error', error.stack)
-    } else {
-        console.log('connected to database')
-    }
-});
+// app.post('/books', addToCollection);
+app.get('/books/:id', showBookDetails);
+app.get('*', (request, response) => response.status(404).render('./pages/error', {errorMessage: 'Page not found', errorCorrect: 'The path you took, leads only here. Some would call this, "nowhere".'}));
 
 function Book(book) {
     this.title = book.title;
@@ -33,7 +28,7 @@ function Book(book) {
     this.isbn = book.industryIdentifiers;
     this.bookshelf = book.bookshelf;
     if(book.imageLinks) {
-        this.imageUrl = book.imageLinks.thumbnail ? book.imageLinks.thumbnail : url('./styles/img/book-placeholder.png');
+        this.imageurl = book.imageLinks.thumbnail ? book.imageLinks.thumbnail : url('./styles/img/book-placeholder.png');
     }
 }
 
@@ -45,12 +40,18 @@ function newSearchData(request, response) {
 
     superagent.get(googleUrl)
         .then((results) => results.body.items.map(book => new Book(book.volumeInfo)))
-        .then((book => response.status(200).render('./pages/searches/show', {book: book})))
+        .then((book => response.status(200).render('./pages/books/show', {book: book})))
         .catch(error => handleError(error, request, response));
 }
 
 function renderPage(request, response) {
-    response.status(200).render('./pages/index.ejs');
+    let sql = 'SELECT * FROM books;';
+    dbClient.query(sql)
+        .then(results => {
+            let resultsData = results.rows;
+            let totalBooks = results.rows.length;
+            response.status(200).render('./pages/index.ejs', {book: resultsData, count: totalBooks});
+        }).catch(error => handleError(error, request, response));
 }
 
 function renderPage2(request, response) {
@@ -60,12 +61,21 @@ function handleError(error, request, response) {
     response.status(500).render('./pages/error.ejs');
   }
 
-app.post('/searches', (request, response) => {
-    let url = googleUrl
-});
+function showBookDetails(request, response) {
+    let id = request.params.id;
+    let sql = 'SELECT * FROM books WHERE id=$1;';
+    let safeValues = [id];
+
+    dbClient.query(sql, safeValues)
+        .then(results => response.render('./pages/books/details', {book: results.rows}))
+        .catch((err) => {
+            response.status(500).render('./pages/error', {errorMessage: 'Could not show book details', errorCorrect: 'Yeah, I am not sure what you did there.'})
+        })
+}
 // app.use('/', (request, response) => response.send('Sorry that route does not exist'));
 
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT:${PORT}`);
-});
+dbClient.connect()
+    .then(() => {
+        app.listen(PORT, () => console.log(`Server is running on PORT:${PORT}`));
+    });
 
